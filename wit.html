@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Sablier</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta http-equiv="refresh" content="{{ .RefreshFrequency }}" />
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html,
+        body {
+            font-family:'Open Sans',sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            display: flex;
+            align-items: stretch;
+            width: 90%;
+        }
+
+        .logocontainer {
+            width: 45%;
+            display: flex;  /* Use flexbox to align items */
+            justify-content: flex-end;  /* Align logo to the right */
+            align-items: center;  /* Vertically center the logo */
+        }
+
+        .logo {
+            width: 50%;
+        }
+
+        .text-container {
+            flex: 1;
+            padding-left: 10px;
+            width: 55%;
+        }
+
+        .divider {
+            flex-shrink: 0;
+            width: 2px;
+            background-color: #ccc;
+            margin: 0 10px;
+        }
+
+        .description {
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        .details .name {
+            text-align: right;
+            padding-right: 1em;
+            width: 30%;
+        }
+
+       .value.error {
+    color: black;  /* White text on the pastel red background */
+    background-color: #f7a7a3;  /* Soft pastel red */
+    padding: 4px 8px;  /* Smaller padding for a more subtle look */
+    border-radius: 5px;  /* Rounded corners */
+    font-size: 14px;  /* Slightly smaller font size */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+}
+
+.value.success {
+    color: black;  /* White text on the pastel green background */
+    background-color: #a8e6a1;  /* Soft pastel green */
+    padding: 4px 8px;  /* Smaller padding */
+    border-radius: 5px;  /* Rounded corners */
+    font-weight: normal;  /* Normal font weight */
+    font-size: 14px;  /* Slightly smaller font size */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+}
+
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="logocontainer">
+            <img class="logo" src="https://wicki.sbs/img/wit.png" alt="Wit Logo">
+        </div>
+        <div class="divider"></div>
+        <div class="text-container">
+            <h3><span>Starting</span> {{ .DisplayName }}</h3>
+            <p class="description">Your instance(s) will stop after {{ .SessionDuration }} of inactivity</p>
+            <div class="details">
+                <table>
+                    {{- range $i, $instance := .InstanceStates }}
+                    <tr>
+                        <td class="name">{{ $instance.Name }}</td>
+                        {{- if $instance.Error }}
+                        <td class="value error">{{ $instance.Error }}</td>
+                        {{- else }}
+                        <td class="value success">{{ $instance.Status }} ({{ $instance.CurrentReplicas }}/{{
+                            $instance.DesiredReplicas }})</td>
+                        {{- end}}
+                    </tr>
+                    {{- end -}}
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
