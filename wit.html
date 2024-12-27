@@ -26,11 +26,11 @@
         .container {
             display: flex;
             align-items: stretch;
-            width: 90%;
+            width: 100vw;
         }
 
         .logocontainer {
-            width: 45%;
+            width: 49%;
             display: flex;
             /* Use flexbox to align items */
             justify-content: flex-end;
@@ -43,64 +43,57 @@
             width: 50%;
         }
 
+        .title {
+            margin-bottom: 0px;
+            margin-top: 0px;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
         .text-container {
             flex: 1;
             padding-left: 10px;
-            width: 55%;
+            width: 50%;
         }
 
         .divider {
             flex-shrink: 0;
             width: 2px;
             background-color: #ccc;
-            margin: 0 10px;
+            margin: 0 1%;
         }
 
         .description {
             font-size: 13px;
             color: #aaa;
+            margin-top: 3px;
         }
 
         .details .name {
-            text-align: right;
+
             padding-right: 1em;
-            width: 30%;
+            font-weight: bold;
+            width: auto;
         }
 
         .value.error {
             color: black;
             /* Black text for better readability */
-            background-color: #f8d7da;
-            /* Very soft pastel red */
-            padding: 3px 6px;
-            /* Smaller padding to keep it subtle */
-            border-radius: 4px;
-            /* Rounded corners for a soft look */
+            display: flex;
+            align-items: center;
             font-weight: normal;
             /* Normal font weight to keep it simple */
-            font-size: 13px;
-            /* Slightly smaller font size for a less aggressive look */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            /* Very subtle shadow */
+
+
         }
 
         .value.success {
             color: black;
             /* Black text for better readability */
-            background-color: #d4edda;
-            /* Very soft pastel green */
-            padding: 3px 6px;
-            /* Small padding to keep it compact */
-            border-radius: 4px;
-            /* Rounded corners */
+            display: flex;
+            align-items: center;
             font-weight: normal;
             /* Normal font weight */
-            font-size: 13px;
-            /* Slightly smaller font size */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            /* Subtle shadow */
-        }
-
 
 
         }
@@ -111,11 +104,39 @@
 <body>
     <div class="container">
         <div class="logocontainer">
-            <img class="logo" src="https://wicki.sbs/img/wit.png" alt="Wit Logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30%" version="1.1"
+                style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="109.43 344.37 725.07 310.27">
+                <g>
+                    <path style="opacity:0.984" fill="#3f3834"
+                        d="M 109.5,344.5 C 139.5,344.5 169.5,344.5 199.5,344.5C 213.192,402.933 227.358,461.266 242,519.5C 255.667,461.5 269.333,403.5 283,345.5C 308.426,344.505 333.926,344.172 359.5,344.5C 374.186,402.578 389.186,460.578 404.5,518.5C 419.109,460.96 433.276,403.293 447,345.5C 471.768,344.173 496.601,344.173 521.5,345.5C 494.008,448.47 466.674,551.47 439.5,654.5C 412.167,654.5 384.833,654.5 357.5,654.5C 344.128,599.011 330.128,543.678 315.5,488.5C 301.786,543.737 288.452,599.071 275.5,654.5C 247.159,654.833 218.825,654.5 190.5,653.5C 163.668,552.839 136.835,452.172 110,351.5C 109.503,349.19 109.337,346.857 109.5,344.5 Z">
+                    </path>
+                </g>
+                <g>
+                    <path style="opacity:0.994" fill="#fe4400"
+                        d="M 592.5,432.5 C 562.833,431.833 533.167,431.167 503.5,430.5C 510.696,402.049 518.363,373.716 526.5,345.5C 556.493,344.5 586.493,344.167 616.5,344.5C 609.102,374.101 601.102,403.434 592.5,432.5 Z">
+                    </path>
+                </g>
+                <g>
+                    <path style="opacity:0.981" fill="#403834"
+                        d="M 621.5,344.5 C 692.5,344.5 763.5,344.5 834.5,344.5C 830.091,369.547 825.424,394.547 820.5,419.5C 800.831,419.333 781.164,419.5 761.5,420C 762.498,498.096 762.832,576.263 762.5,654.5C 731.833,654.5 701.167,654.5 670.5,654.5C 670.5,576.167 670.5,497.833 670.5,419.5C 647.5,419.5 624.5,419.5 601.5,419.5C 607.766,394.372 614.433,369.372 621.5,344.5 Z">
+                    </path>
+                </g>
+                <g>
+                    <path style="opacity:1" fill="#cc410e"
+                        d="M 503.5,430.5 C 533.167,431.167 562.833,431.833 592.5,432.5C 562.5,432.5 532.5,432.5 502.5,432.5C 502.328,431.508 502.662,430.842 503.5,430.5 Z">
+                    </path>
+                </g>
+                <g>
+                    <path style="opacity:0.987" fill="#3f3835"
+                        d="M 502.5,432.5 C 532.5,432.5 562.5,432.5 592.5,432.5C 573.14,506.272 553.307,579.939 533,653.5C 502.9,654.828 472.733,654.828 442.5,653.5C 462.659,579.864 482.659,506.198 502.5,432.5 Z">
+                    </path>
+                </g>
+            </svg>
         </div>
         <div class="divider"></div>
         <div class="text-container">
-            <h3><span>Starting</span> {{ .DisplayName }}</h3>
+            <h3 class="title"><span>Starting</span> {{ .DisplayName }}</h3>
             <p class="description">Your instance(s) will stop after {{ .SessionDuration }} of inactivity</p>
             <div class="details">
                 <table>
@@ -123,14 +144,38 @@
                     <tr>
                         <td class="name">{{ $instance.Name }}</td>
                         {{- if $instance.Error }}
-                        <td class="value error">{{ $instance.Error }}</td>
+                        <td class="value error">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill=" #ff4747 " viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" width="18px" style="margin-right: 5px">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                            </svg>
+                            {{ $instance.Error }}
+                        </td>
                         {{- else }}
-                        <td class="value success">{{ $instance.Status }} ({{ $instance.CurrentReplicas }}/{{
-                            $instance.DesiredReplicas }})</td>
-                        {{- end}}
+                        <td class="value success">
+                            {{- if ne $instance.CurrentReplicas $instance.DesiredReplicas }}
+                            <!-- Use the new SVG if replicas don't match -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="#47deff" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="black" width="18px" style="margin-right: 5px">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            {{- else }}
+                            <!-- Use the success SVG if replicas match -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill=" #52ea40 " viewBox="0 0 24 24"
+                                stroke-width="1.5" width="18px" style="margin-right: 5px" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            {{- end }}
+                            {{ $instance.Status }} ({{ $instance.CurrentReplicas }}/{{ $instance.DesiredReplicas }})
+                        </td>
+                        {{- end }}
                     </tr>
                     {{- end -}}
                 </table>
+
             </div>
         </div>
     </div>
