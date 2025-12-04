@@ -13,34 +13,37 @@
     <link rel="dns-prefetch" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Base styles (for desktop/larger screens) */
         html,
         body {
             font-family: 'Open Sans', sans-serif;
-            height: 100vh;
+            height: 100vh; /* Set full height for centering */
             margin: 0;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: center; /* Vertically center content */
+            justify-content: center; /* Horizontally center content */
+            padding: 10px;
         }
 
         .container {
             display: flex;
             align-items: stretch;
             width: 100vw;
+            max-width: 800px;
+            box-sizing: border-box;
         }
 
         .logocontainer {
             width: 49%;
             display: flex;
-            /* Use flexbox to align items */
             justify-content: flex-end;
-            /* Align logo to the right */
             align-items: center;
-            /* Vertically center the logo */
         }
 
-        .logo {
+        .logocontainer svg {
             width: 50%;
+            max-width: 250px;
+            height: auto;
         }
 
         .title {
@@ -69,33 +72,132 @@
             margin-top: 3px;
         }
 
-        .details .name {
+        /* Table Styling */
+        .details table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
 
+        .details tr {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .details td {
+            padding: 8px 0;
+            vertical-align: middle;
+        }
+
+        .details .name {
             padding-right: 1em;
             font-weight: bold;
-            width: auto;
+            width: 100px;
+            white-space: nowrap;
         }
 
-        .value.error {
-            color: black;
-            /* Black text for better readability */
-            display: flex;
-            align-items: center;
-            font-weight: normal;
-            /* Normal font weight to keep it simple */
-
-
-        }
-
+        .value.error,
         .value.success {
             color: black;
-            /* Black text for better readability */
             display: flex;
             align-items: center;
             font-weight: normal;
-            /* Normal font weight */
+            text-align: left;
+        }
+        
+        /* Icon Styling */
+        .status-icon {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            flex-shrink: 0;
+            stroke: currentColor; /* Use currentColor for icons where stroke is desired */
+            stroke-width: 1.5;
+        }
 
+        /* Color Scheme for Icons: New colors based on request */
+        
+        /* Red Triangle for Failed */
+        .icon-error {
+            fill: #cc410e; /* Red/Orange */
+            stroke: none;
+        }
+        
+        /* Green Circle for Okay (Success) */
+        .icon-success {
+            fill: #4CAF50; /* Green */
+            stroke: none; 
+        }
 
+        /* Blue Circle for Starting (Pending) */
+        .icon-pending {
+            fill: #2196F3; /* Blue */
+            stroke: none; 
+        }
+
+        /* --- Mobile Responsiveness with Media Query --- */
+        @media (max-width: 600px) {
+            
+            /* Keep body as flex container with full height for centering */
+            html, body {
+                height: 100vh; 
+                padding: 20px;
+            }
+            
+            .container {
+                flex-direction: column;
+                width: 100%;
+                margin: auto; 
+            }
+
+            .logocontainer {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+            
+            .logocontainer svg {
+                width: 50%; 
+                max-width: 120px;
+            }
+
+            .text-container {
+                width: 100%;
+                padding-left: 0;
+            }
+            
+            .text-container > h3,
+            .text-container > p {
+                text-align: center;
+            }
+            
+            .details table {
+                width: 100%;
+                table-layout: auto;
+            }
+
+            .details tr {
+                display: table-row;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            
+            .details .name {
+                text-align: left;
+                padding-left: 0;
+                width: auto;
+            }
+
+            .details .value {
+                text-align: left;
+            }
+            
+            .value.error,
+            .value.success {
+                justify-content: flex-start;
+            }
+
+            .divider {
+                display: none;
+            }
         }
     </style>
 
@@ -104,7 +206,7 @@
 <body>
     <div class="container">
         <div class="logocontainer">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30%" version="1.1"
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
                 style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
                 xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="109.43 344.37 725.07 310.27">
                 <g>
@@ -145,8 +247,8 @@
                         <td class="name">{{ $instance.Name }}</td>
                         {{- if $instance.Error }}
                         <td class="value error">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill=" #ff4747 " viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" width="18px" style="margin-right: 5px">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                stroke-width="1.5" class="status-icon icon-error">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
                             </svg>
@@ -155,18 +257,14 @@
                         {{- else }}
                         <td class="value success">
                             {{- if ne $instance.CurrentReplicas $instance.DesiredReplicas }}
-                            <!-- Use the new SVG if replicas don't match -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="#47deff" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="black" width="18px" style="margin-right: 5px">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                class="status-icon icon-pending">
+                                <circle cx="12" cy="12" r="9"/>
                             </svg>
                             {{- else }}
-                            <!-- Use the success SVG if replicas match -->
-                            <svg xmlns="http://www.w3.org/2000/svg" fill=" #52ea40 " viewBox="0 0 24 24"
-                                stroke-width="1.5" width="18px" style="margin-right: 5px" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                class="status-icon icon-success">
+                                <circle cx="12" cy="12" r="9"/>
                             </svg>
                             {{- end }}
                             {{ $instance.Status }} ({{ $instance.CurrentReplicas }}/{{ $instance.DesiredReplicas }})
