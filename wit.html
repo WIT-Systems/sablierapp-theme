@@ -132,6 +132,21 @@
         .icon-pending {
             fill: #2196F3; /* Blue */
             stroke: none; 
+            /* *** PULSATE EFFECT MODIFIED FOR OPACITY HERE *** */
+            animation: pulse 0.5s infinite;
+        }
+
+        /* *** PULSATE KEYFRAMES MODIFIED FOR OPACITY HERE *** */
+        @keyframes pulse {
+            0% {
+                opacity: 1; /* Fully visible */
+            }
+            50% {
+                opacity: 0.3; /* Fades out to 30% visibility */
+            }
+            100% {
+                opacity: 1; /* Fades back to 100% visibility */
+            }
         }
 
         /* --- Mobile Responsiveness with Media Query --- */
