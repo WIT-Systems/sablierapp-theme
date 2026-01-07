@@ -28,15 +28,20 @@
         .container {
             display: flex;
             align-items: stretch;
-            width: 100vw;
-            max-width: 800px;
+            width: 100%;
+            min-width: 400px;
+            /* Reintroduce max-width to define the default box size */
+            max-width: 800px; 
             box-sizing: border-box;
+            /* The overall content block is centered due to body/html settings */
         }
 
         .logocontainer {
+            /* Set fixed proportion for logo area */
             width: 49%;
+            flex-shrink: 0; 
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-end; 
             align-items: center;
         }
 
@@ -54,9 +59,12 @@
         }
 
         .text-container {
-            flex: 1;
+            flex: 1; /* Allow it to fill the remaining space defined by .container max-width */
             padding-left: 10px;
-            width: 50%;
+            /* Allow content inside (the table) to break out if it's too long */
+            overflow: visible; 
+            /* Added to ensure the right side content doesn't force unnecessary overflow of the whole container. */
+            min-width: 0; 
         }
 
         .divider {
@@ -75,8 +83,10 @@
         /* Table Styling */
         .details table {
             border-collapse: collapse;
-            width: 100%;
-            table-layout: fixed;
+            /* Set width to 'auto' so it can expand beyond its container if content is long */
+            width: auto; 
+            min-width: 100%; /* Ensure it takes up available space when content is short */
+            table-layout: auto; /* Ensure columns size to content */
         }
 
         .details tr {
@@ -89,19 +99,21 @@
         }
 
         .details .name {
-            padding-right: 1em;
             font-weight: bold;
-            width: 100px;
-            white-space: nowrap;
+            white-space: nowrap; 
+            display: flex; 
+            align-items: center;
+            justify-content: flex-start;
+            padding-right: 1em; 
+            width: 1%;
         }
 
-        .value.error,
-        .value.success {
-            color: black;
-            display: flex;
-            align-items: center;
+        .details .status-count {
+            text-align: right; 
             font-weight: normal;
-            text-align: left;
+            white-space: nowrap; 
+            /* Give this column minimal width priority */
+            width: 1%;
         }
         
         /* Icon Styling */
@@ -110,49 +122,42 @@
             height: 18px;
             margin-right: 8px;
             flex-shrink: 0;
-            stroke: currentColor; /* Use currentColor for icons where stroke is desired */
+            stroke: currentColor; 
             stroke-width: 1.5;
         }
 
-        /* Color Scheme for Icons: New colors based on request */
-        
-        /* Red Triangle for Failed */
+        /* Color Scheme for Icons: */
         .icon-error {
-            fill: #cc410e; /* Red/Orange */
+            fill: #cc410e; 
             stroke: none;
         }
         
-        /* Green Circle for Okay (Success) */
         .icon-success {
-            fill: #4CAF50; /* Green */
+            fill: #4CAF50; 
             stroke: none; 
         }
 
-        /* Blue Circle for Starting (Pending) */
         .icon-pending {
-            fill: #2196F3; /* Blue */
+            fill: #2196F3; 
             stroke: none; 
-            /* *** PULSATE EFFECT MODIFIED FOR OPACITY HERE *** */
             animation: pulse 0.5s infinite;
         }
 
-        /* *** PULSATE KEYFRAMES MODIFIED FOR OPACITY HERE *** */
         @keyframes pulse {
             0% {
-                opacity: 1; /* Fully visible */
+                opacity: 1; 
             }
             50% {
-                opacity: 0.3; /* Fades out to 30% visibility */
+                opacity: 0.3; 
             }
             100% {
-                opacity: 1; /* Fades back to 100% visibility */
+                opacity: 1; 
             }
         }
 
         /* --- Mobile Responsiveness with Media Query --- */
-        @media (max-width: 600px) {
+        @media (max-width: 1000px) {
             
-            /* Keep body as flex container with full height for centering */
             html, body {
                 height: 100vh; 
                 padding: 20px;
@@ -161,11 +166,14 @@
             .container {
                 flex-direction: column;
                 width: 100%;
+                min-width: 0; 
                 margin: auto; 
+                max-width: 100%; 
             }
 
             .logocontainer {
                 width: 100%;
+                flex-basis: auto; 
                 justify-content: center;
                 margin-bottom: 20px;
             }
@@ -177,7 +185,9 @@
 
             .text-container {
                 width: 100%;
+                max-width: none;
                 padding-left: 0;
+                overflow: hidden; /* Prevent horizontal scrolling on mobile */
             }
             
             .text-container > h3,
@@ -199,15 +209,12 @@
                 text-align: left;
                 padding-left: 0;
                 width: auto;
+                white-space: normal; 
             }
 
-            .details .value {
+            .details .status-count {
                 text-align: left;
-            }
-            
-            .value.error,
-            .value.success {
-                justify-content: flex-start;
+                white-space: normal; 
             }
 
             .divider {
@@ -259,18 +266,15 @@
                 <table>
                     {{- range $i, $instance := .InstanceStates }}
                     <tr>
-                        <td class="name">{{ $instance.Name }}</td>
-                        {{- if $instance.Error }}
-                        <td class="value error">
+                        <td class="name">
+                            {{- if $instance.Error }}
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 stroke-width="1.5" class="status-icon icon-error">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
                             </svg>
-                            {{ $instance.Error }}
-                        </td>
-                        {{- else }}
-                        <td class="value success">
+                            <span style="font-weight: normal; color: #cc410e;">{{ $instance.Error }}</span>
+                            {{- else }}
                             {{- if ne $instance.CurrentReplicas $instance.DesiredReplicas }}
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 class="status-icon icon-pending">
@@ -282,9 +286,15 @@
                                 <circle cx="12" cy="12" r="9"/>
                             </svg>
                             {{- end }}
-                            {{ $instance.Status }} ({{ $instance.CurrentReplicas }}/{{ $instance.DesiredReplicas }})
+                            <span>{{ $instance.Name }}</span>
+                            {{- end }}
                         </td>
-                        {{- end }}
+                        <td class="status-count">
+                            {{- if $instance.Error }}
+                            {{- else }}
+                            {{ $instance.Status }} ({{ $instance.CurrentReplicas }}/{{ $instance.DesiredReplicas }})
+                            {{- end }}
+                        </td>
                     </tr>
                     {{- end -}}
                 </table>
