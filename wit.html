@@ -1,307 +1,255 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Sablier</title>
+    <title>Sablier | Starting App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta http-equiv="refresh" content="{{ .RefreshFrequency }}" />
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
-    <link rel="dns-prefetch" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Base styles (for desktop/larger screens) */
-        html,
-        body {
+        :root {
+            --brand-orange: #fe4400;
+            --brand-dark: #3f3834;
+            --bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --error-red: #dc3545;
+            --success-green: #28a745;
+        }
+
+        html, body {
             font-family: 'Open Sans', sans-serif;
-            height: 100vh; /* Set full height for centering */
+            min-height: 100vh;
             margin: 0;
             display: flex;
-            align-items: center; /* Vertically center content */
-            justify-content: center; /* Horizontally center content */
-            padding: 10px;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-gradient);
+            color: #333;
+            padding: 20px;
         }
 
         .container {
             display: flex;
             align-items: stretch;
-            width: 100%;
-            min-width: 400px;
-            /* Reintroduce max-width to define the default box size */
-            max-width: 800px; 
+            /* Container will now expand to fit content width */
+            width: fit-content;
+            min-width: 450px;
+            max-width: 95vw; 
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
             box-sizing: border-box;
-            /* The overall content block is centered due to body/html settings */
         }
 
         .logocontainer {
-            /* Set fixed proportion for logo area */
-            width: 49%;
-            flex-shrink: 0; 
             display: flex;
-            justify-content: flex-end; 
+            justify-content: center;
             align-items: center;
+            padding-right: 40px;
+            flex-shrink: 0;
         }
 
         .logocontainer svg {
-            width: 50%;
-            max-width: 250px;
+            width: 180px;
             height: auto;
+            animation: breathe 4s ease-in-out infinite;
         }
 
-        .title {
-            margin-bottom: 0px;
-            margin-top: 0px;
-            font-size: 25px;
-            font-weight: bold;
-        }
-
-        .text-container {
-            flex: 1; /* Allow it to fill the remaining space defined by .container max-width */
-            padding-left: 10px;
-            /* Allow content inside (the table) to break out if it's too long */
-            overflow: visible; 
-            /* Added to ensure the right side content doesn't force unnecessary overflow of the whole container. */
-            min-width: 0; 
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
         }
 
         .divider {
+            width: 1px;
+            background-color: #eee;
+            margin-right: 40px;
             flex-shrink: 0;
-            width: 2px;
-            background-color: #ccc;
-            margin: 0 1%;
+        }
+
+        .text-container {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .title {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--brand-dark);
+            white-space: nowrap;
         }
 
         .description {
-            font-size: 13px;
-            color: #aaa;
-            margin-top: 3px;
+            font-size: 14px;
+            color: #888;
+            margin: 8px 0 24px 0;
         }
 
         /* Table Styling */
         .details table {
             border-collapse: collapse;
-            /* Set width to 'auto' so it can expand beyond its container if content is long */
-            width: auto; 
-            min-width: 100%; /* Ensure it takes up available space when content is short */
-            table-layout: auto; /* Ensure columns size to content */
+            width: 100%;
         }
 
         .details tr {
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f8f9fa;
         }
 
         .details td {
-            padding: 8px 0;
-            vertical-align: middle;
+            padding: 12px 0;
         }
 
-        .details .name {
-            font-weight: bold;
-            white-space: nowrap; 
-            display: flex; 
-            align-items: center;
-            justify-content: flex-start;
-            padding-right: 1em; 
-            width: 1%;
+        /* Name Cell Logic */
+        .name-cell {
+            display: flex;
+            align-items: flex-start;
+            padding-right: 30px; /* Space between name and status count */
         }
 
-        .details .status-count {
-            text-align: right; 
-            font-weight: normal;
-            white-space: nowrap; 
-            /* Give this column minimal width priority */
-            width: 1%;
-        }
-        
-        /* Icon Styling */
         .status-icon {
-            width: 18px;
-            height: 18px;
-            margin-right: 8px;
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            margin-top: 2px;
             flex-shrink: 0;
-            stroke: currentColor; 
-            stroke-width: 1.5;
         }
 
-        /* Color Scheme for Icons: */
-        .icon-error {
-            fill: #cc410e; 
-            stroke: none;
-        }
-        
-        .icon-success {
-            fill: #4CAF50; 
-            stroke: none; 
-        }
-
+        .icon-error { fill: var(--error-red); }
+        .icon-success { fill: var(--success-green); }
         .icon-pending {
-            fill: #2196F3; 
-            stroke: none; 
-            animation: pulse 0.5s infinite;
+            fill: var(--brand-orange);
+            animation: pulse 1.5s ease-in-out infinite;
         }
 
         @keyframes pulse {
-            0% {
-                opacity: 1; 
-            }
-            50% {
-                opacity: 0.3; 
-            }
-            100% {
-                opacity: 1; 
-            }
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
-        /* --- Mobile Responsiveness with Media Query --- */
-        @media (max-width: 1000px) {
-            
-            html, body {
-                height: 100vh; 
-                padding: 20px;
-            }
-            
+        .status-content {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .instance-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--brand-dark);
+            /* Only wraps if it hits the max-width of the card */
+            word-break: break-word; 
+        }
+
+        .error-title {
+            color: var(--error-red);
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .error-msg {
+            color: #a35d5d;
+            font-size: 12px;
+            line-height: 1.4;
+            margin-top: 2px;
+        }
+
+        /* Status Count Logic */
+        .status-count {
+            text-align: right;
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap; /* Keeps "(0/1)" on one line */
+            vertical-align: top;
+            padding-top: 14px !important;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
             .container {
                 flex-direction: column;
                 width: 100%;
-                min-width: 0; 
-                margin: auto; 
-                max-width: 100%; 
-            }
-
-            .logocontainer {
-                width: 100%;
-                flex-basis: auto; 
-                justify-content: center;
-                margin-bottom: 20px;
-            }
-            
-            .logocontainer svg {
-                width: 50%; 
-                max-width: 120px;
-            }
-
-            .text-container {
-                width: 100%;
-                max-width: none;
-                padding-left: 0;
-                overflow: hidden; /* Prevent horizontal scrolling on mobile */
-            }
-            
-            .text-container > h3,
-            .text-container > p {
+                min-width: 0;
+                padding: 30px;
+                align-items: center;
                 text-align: center;
             }
-            
-            .details table {
-                width: 100%;
-                table-layout: auto;
+            .logocontainer {
+                padding-right: 0;
+                margin-bottom: 20px;
             }
-
-            .details tr {
-                display: table-row;
-                border-bottom: 1px solid #f0f0f0;
+            .divider { display: none; }
+            .name-cell { justify-content: center; padding-right: 0; }
+            .status-count {
+                text-align: center;
+                display: block;
+                padding-top: 4px !important;
+                margin-bottom: 10px;
             }
-            
-            .details .name {
-                text-align: left;
-                padding-left: 0;
-                width: auto;
-                white-space: normal; 
-            }
-
-            .details .status-count {
-                text-align: left;
-                white-space: normal; 
-            }
-
-            .divider {
-                display: none;
-            }
+            .title { white-space: normal; }
         }
     </style>
-
 </head>
-
 <body>
-    <div class="container">
-        <div class="logocontainer">
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-                style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="109.43 344.37 725.07 310.27">
-                <g>
-                    <path style="opacity:0.984" fill="#3f3834"
-                        d="M 109.5,344.5 C 139.5,344.5 169.5,344.5 199.5,344.5C 213.192,402.933 227.358,461.266 242,519.5C 255.667,461.5 269.333,403.5 283,345.5C 308.426,344.505 333.926,344.172 359.5,344.5C 374.186,402.578 389.186,460.578 404.5,518.5C 419.109,460.96 433.276,403.293 447,345.5C 471.768,344.173 496.601,344.173 521.5,345.5C 494.008,448.47 466.674,551.47 439.5,654.5C 412.167,654.5 384.833,654.5 357.5,654.5C 344.128,599.011 330.128,543.678 315.5,488.5C 301.786,543.737 288.452,599.071 275.5,654.5C 247.159,654.833 218.825,654.5 190.5,653.5C 163.668,552.839 136.835,452.172 110,351.5C 109.503,349.19 109.337,346.857 109.5,344.5 Z">
-                    </path>
-                </g>
-                <g>
-                    <path style="opacity:0.994" fill="#fe4400"
-                        d="M 592.5,432.5 C 562.833,431.833 533.167,431.167 503.5,430.5C 510.696,402.049 518.363,373.716 526.5,345.5C 556.493,344.5 586.493,344.167 616.5,344.5C 609.102,374.101 601.102,403.434 592.5,432.5 Z">
-                    </path>
-                </g>
-                <g>
-                    <path style="opacity:0.981" fill="#403834"
-                        d="M 621.5,344.5 C 692.5,344.5 763.5,344.5 834.5,344.5C 830.091,369.547 825.424,394.547 820.5,419.5C 800.831,419.333 781.164,419.5 761.5,420C 762.498,498.096 762.832,576.263 762.5,654.5C 731.833,654.5 701.167,654.5 670.5,654.5C 670.5,576.167 670.5,497.833 670.5,419.5C 647.5,419.5 624.5,419.5 601.5,419.5C 607.766,394.372 614.433,369.372 621.5,344.5 Z">
-                    </path>
-                </g>
-                <g>
-                    <path style="opacity:1" fill="#cc410e"
-                        d="M 503.5,430.5 C 533.167,431.167 562.833,431.833 592.5,432.5C 562.5,432.5 532.5,432.5 502.5,432.5C 502.328,431.508 502.662,430.842 503.5,430.5 Z">
-                    </path>
-                </g>
-                <g>
-                    <path style="opacity:0.987" fill="#3f3835"
-                        d="M 502.5,432.5 C 532.5,432.5 562.5,432.5 592.5,432.5C 573.14,506.272 553.307,579.939 533,653.5C 502.9,654.828 472.733,654.828 442.5,653.5C 462.659,579.864 482.659,506.198 502.5,432.5 Z">
-                    </path>
-                </g>
-            </svg>
-        </div>
-        <div class="divider"></div>
-        <div class="text-container">
-            <h3 class="title"><span>Starting</span> {{ .DisplayName }}</h3>
-            <p class="description">Your instance(s) will stop after {{ .SessionDuration }} of inactivity</p>
-            <div class="details">
-                <table>
-                    {{- range $i, $instance := .InstanceStates }}
-                    <tr>
-                        <td class="name">
-                            {{- if $instance.Error }}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                stroke-width="1.5" class="status-icon icon-error">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-                            </svg>
-                            <span style="font-weight: normal; color: #cc410e;">{{ $instance.Error }}</span>
-                            {{- else }}
-                            {{- if ne $instance.CurrentReplicas $instance.DesiredReplicas }}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                class="status-icon icon-pending">
-                                <circle cx="12" cy="12" r="9"/>
-                            </svg>
-                            {{- else }}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                class="status-icon icon-success">
-                                <circle cx="12" cy="12" r="9"/>
-                            </svg>
-                            {{- end }}
-                            <span>{{ $instance.Name }}</span>
-                            {{- end }}
-                        </td>
-                        <td class="status-count">
-                            {{- if $instance.Error }}
-                            {{- else }}
-                            {{ $instance.Status }} ({{ $instance.CurrentReplicas }}/{{ $instance.DesiredReplicas }})
-                            {{- end }}
-                        </td>
-                    </tr>
-                    {{- end -}}
-                </table>
 
-            </div>
+<div class="container">
+    <div class="logocontainer">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="109.43 344.37 725.07 310.27">
+            <g><path fill="#3f3834" d="M 109.5,344.5 C 139.5,344.5 169.5,344.5 199.5,344.5C 213.192,402.933 227.358,461.266 242,519.5C 255.667,461.5 269.333,403.5 283,345.5C 308.426,344.505 333.926,344.172 359.5,344.5C 374.186,402.578 389.186,460.578 404.5,518.5C 419.109,460.96 433.276,403.293 447,345.5C 471.768,344.173 496.601,344.173 521.5,345.5C 494.008,448.47 466.674,551.47 439.5,654.5C 412.167,654.5 384.833,654.5 357.5,654.5C 344.128,599.011 330.128,543.678 315.5,488.5C 301.786,543.737 288.452,599.071 275.5,654.5C 247.159,654.833 218.825,654.5 190.5,653.5C 163.668,552.839 136.835,452.172 110,351.5 C 109.503,349.19 109.337,346.857 109.5,344.5 Z"></path></g>
+            <g><path fill="#fe4400" d="M 592.5,432.5 C 562.833,431.833 533.167,431.167 503.5,430.5 C 510.696,402.049 518.363,373.716 526.5,345.5 C 556.493,344.5 586.493,344.167 616.5,344.5 C 609.102,374.101 601.102,403.434 592.5,432.5 Z"></path></g>
+            <g><path fill="#403834" d="M 621.5,344.5 C 692.5,344.5 763.5,344.5 834.5,344.5 C 830.091,369.547 825.424,394.547 820.5,419.5 C 800.831,419.333 781.164,419.5 761.5,420 C 762.498,498.096 762.832,576.263 762.5,654.5 C 731.833,654.5 701.167,654.5 670.5,654.5 C 670.5,576.167 670.5,497.833 670.5,419.5 C 647.5,419.5 624.5,419.5 601.5,419.5 C 607.766,394.372 614.433,369.372 621.5,344.5 Z"></path></g>
+            <g><path fill="#3f3835" d="M 502.5,432.5 C 532.5,432.5 562.5,432.5 592.5,432.5 C 573.14,506.272 553.307,579.939 533,653.5 C 502.9,654.828 472.733,654.828 442.5,653.5 C 462.659,579.864 482.659,506.198 502.5,432.5 Z"></path></g>
+        </svg>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="text-container">
+        <h3 class="title">Starting {{ .DisplayName }}</h3>
+        <p class="description">Automatic shutdown after {{ .SessionDuration }} of inactivity.</p>
+        
+        <div class="details">
+            <table>
+                {{- range $i, $instance := .InstanceStates }}
+                <tr>
+                    <td class="name-cell">
+                        {{- if $instance.Error }}
+                        <svg class="status-icon icon-error" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        <div class="status-content">
+                            <span class="error-title">Instance Error</span>
+                            <span class="error-msg">{{ $instance.Error }}</span>
+                        </div>
+                        {{- else }}
+                        {{- if ne $instance.CurrentReplicas $instance.DesiredReplicas }}
+                        <svg class="status-icon icon-pending" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                        {{- else }}
+                        <svg class="status-icon icon-success" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        {{- end }}
+                        <div class="status-content">
+                            <span class="instance-name">{{ $instance.Name }}</span>
+                        </div>
+                        {{- end }}
+                    </td>
+                    <td class="status-count">
+                        {{- if not $instance.Error }}
+                        {{ $instance.Status }} ({{ $instance.CurrentReplicas }}/{{ $instance.DesiredReplicas }})
+                        {{- else }}
+                        <span style="color: var(--error-red); font-weight: 600;">Failed</span>
+                        {{- end }}
+                    </td>
+                </tr>
+                {{- end -}}
+            </table>
         </div>
     </div>
-</body>
+</div>
 
+</body>
 </html>
